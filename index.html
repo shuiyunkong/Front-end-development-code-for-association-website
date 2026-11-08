@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<!--
+  协会官网首页 —— 第 0 步：结构骨架（毛坯房）
+  说明：
+  1. 这里只有"内容和结构"，样式很粗糙，是给第 1 步"能打开看"用的。
+  2. 美化（颜色、字体、间距、手机端细节）交给写代码的 AI 按《需求》和《提示词》来做。
+  3. 所有新闻都是假数据，等后端做好再换成真实数据。
+-->
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport：告诉手机"按屏幕实际宽度显示"，不加这行手机上整页会缩得很小 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测绘协会</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- ========== 1. 页眉 header ==========
+       左边：协会标志 + 名称（整块是一个链接，点回首页）
+       右边：只保留"微信公众号"一个按钮（原站的其他按钮按需求全部去掉）
+  -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/img/logo-placeholder.svg" alt="协会标志">
+        <span class="brand-name">测绘协会</span>
+      </a>
+      <a class="btn-wechat" href="#">微信公众号</a>
+    </div>
+  </header>
+
+  <!-- ========== 2. header 与 nav 之间的条带 band ==========
+       需求：保留这条横向区域，但右侧文字删掉，只留左侧装饰区。
+       现在用一个空容器占位，样式在 css 里控制高度和背景。
+  -->
+  <div class="band"></div>
+
+  <!-- ========== 3. 导航 nav ==========
+       需求：11 项，顺序固定；全部是可点击链接（href 先用 # 占位）。
+       后续每个页面做好后，把 # 换成对应文件名，例如 about.html。
+  -->
+  <nav class="site-nav">
+    <div class="container">
+      <ul class="nav-list">
+        <li><a href="index.html" class="active">网站首页</a></li>
+        <li><a href="#">协会概况</a></li>
+        <li><a href="#">制度文件</a></li>
+        <li><a href="#">通知公告</a></li>
+        <li><a href="#">学生工作</a></li>
+        <li><a href="#">办公室</a></li>
+        <li><a href="#">组织部</a></li>
+        <li><a href="#">宣传部</a></li>
+        <li><a href="#">技术部</a></li>
+        <li><a href="#">设备部</a></li>
+        <li><a href="#">研发部</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ========== 4. 主体 main：三栏资讯区 ==========
+       左：协会要闻（原"学校要闻"）
+       中：学生工作（原"党建引领"）
+       右：通知公告（名字不变）
+       桌面并排，手机上下堆叠（靠 CSS 的 flex + 媒体查询实现）
+  -->
+  <main class="container main-cols">
+
+    <!-- 左栏 -->
+    <section class="col">
+      <h2 class="col-title">协会要闻</h2>
+      <ul class="news-list">
+        <li><a href="#">协会成立大会顺利召开</a><time>11-05</time></li>
+        <li><a href="#">2026 级新会员培训启动</a><time>11-05</time></li>
+        <li><a href="#">协会与设备部联合开展仪器维护</a><time>11-05</time></li>
+        <li><a href="#">无人机航测实操训练顺利完成</a><time>11-05</time></li>
+        <li><a href="#">协会获校级"优秀社团"称号</a><time>11-05</time></li>
+      </ul>
+    </section>
+
+    <!-- 中栏 -->
+    <section class="col">
+      <h2 class="col-title">学生工作</h2>
+      <ul class="news-list">
+        <li><a href="#">协会召开本学期第一次例会</a><time>11-06</time></li>
+        <li><a href="#">各部门值班表已更新</a><time>11-05</time></li>
+        <li><a href="#">关于开展技能培训的通知</a><time>11-05</time></li>
+        <li><a href="#">新会员实习考核安排</a><time>11-03</time></li>
+        <li><a href="#">加分材料提交说明</a><time>11-03</time></li>
+      </ul>
+    </section>
+
+    <!-- 右栏 -->
+    <section class="col">
+      <h2 class="col-title">通知公告</h2>
+      <ul class="news-list">
+        <li><a href="#">关于协会章程修订的公告</a><time>09-21</time></li>
+        <li><a href="#">2026 年招新结果公示</a><time>10-10</time></li>
+        <li><a href="#">仪器借用管理办法</a><time>10-18</time></li>
+        <li><a href="#">活动策划书模板下载</a><time>10-25</time></li>
+        <li><a href="#">经费申请流程说明</a><time>11-01</time></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- ========== 5. 页脚 footer ==========
+       需求：结构同原站（联系方式 + 二维码 + 版权备案），样式可以从简。
+       注意：备案号、地址、电话等要用协会自己的真实信息，现在是占位。
+  -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-col">
+        <h3>联系我们</h3>
+        <p>地址：待填写</p>
+        <p>邮箱：待填写</p>
+      </div>
+      <div class="footer-col">
+        <h3>关注我们</h3>
+        <p>微信公众号（二维码占位）</p>
+      </div>
+      <div class="footer-col">
+        <h3>关于本站</h3>
+        <p>由协会研发部维护</p>
+      </div>
+    </div>
+    <div class="copyright">
+      <p>© 2026 无人机测绘协会 · 备案号待填写</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>

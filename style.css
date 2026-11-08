@@ -1,0 +1,300 @@
+/* =========================================================================
+   协会官网首页样式 —— 第 1 步：整体美化
+   参考：assets/ref/01~06.png（学校官网截图）
+   说明：
+   1. 布局只用"普通流 + flex"，不用 grid / float / 绝对定位。
+   2. 所有颜色、字号、间距都放在 :root 变量里，改一处就全局生效。
+   3. 手机端细节放在文件最后的 @media 里。
+   ========================================================================= */
+
+/* :root 是文档根元素，把变量定义在这里，其他地方用 var(--名字) 引用 */
+:root {
+  /* ---- 颜色 ---- */
+  --c-primary: #1a5a96;        /* 主色：页眉底色、导航选中、标题装饰 */
+  --c-primary-deep: #123f6b;   /* 深主色：页眉/页脚渐变的暗端 */
+  --c-accent: #c9a227;         /* 强调色：页脚小标题左侧竖条（金色） */
+  --c-nav-text: #13508a;       /* 导航文字（白底上的深蓝） */
+  --c-text: #333333;           /* 正文颜色 */
+  --c-text-light: #7a7f87;     /* 次要文字：日期 */
+  --c-bg: #ffffff;             /* 页面底色 */
+  --c-bg-soft: #f2f5f9;        /* 浅灰蓝区块底色（条带） */
+  --c-line: #e2e7ee;           /* 分割线颜色 */
+  --c-footer-top: #3f80c5;     /* 页脚渐变的上端（浅蓝） */
+  --c-footer-bottom: #245a93;  /* 页脚渐变的下端（深蓝） */
+  --c-white: #ffffff;          /* 白色（页眉页脚文字） */
+
+  /* ---- 尺寸 ---- */
+  --w-container: 1200px;       /* 内容最大宽度，超宽屏不再拉伸 */
+  --space-xs: 6px;             /* 最小间距 */
+  --space-sm: 10px;            /* 小间距 */
+  --space: 16px;               /* 基础间距 */
+  --space-lg: 24px;            /* 大间距：三栏之间的空隙 */
+  --space-xl: 32px;            /* 特大间距：主体上下留白 */
+  --radius: 4px;               /* 圆角 */
+
+  /* ---- 字号 ---- */
+  --fs-brand: 20px;            /* 页眉协会名称 */
+  --fs-nav: 15px;              /* 导航文字 */
+  --fs-title: 19px;            /* 三栏标题 */
+  --fs-body: 14px;             /* 新闻标题 */
+  --fs-small: 13px;            /* 日期、页脚文字 */
+}
+
+/* 重置：浏览器默认有内外边距，先清零，避免不同浏览器不一致 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  color: var(--c-text);
+  background: var(--c-bg);
+  line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+
+/* 居中容器：所有内容都套一层，保证左右留白一致 */
+.container {
+  width: 100%;
+  max-width: var(--w-container);
+  margin: 0 auto;
+  padding: 0 var(--space);
+}
+
+/* =========================================================================
+   1. 页眉 header：深蓝底 + 白色文字（普通流 + flex，两端对齐）
+   ========================================================================= */
+.site-header {
+  background: linear-gradient(180deg, var(--c-primary), var(--c-primary-deep));
+  color: var(--c-white);
+  padding: 12px 0;
+}
+
+/* flex + space-between：标志靠左，微信公众号按钮靠右 */
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space);
+}
+
+/* 标志和名称也排成一行：flex + 居中 */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.brand-logo { width: 44px; height: 44px; flex-shrink: 0; }
+
+.brand-name {
+  font-size: var(--fs-brand);
+  font-weight: bold;
+  letter-spacing: 2px;
+  white-space: nowrap;       /* 名称不换行 */
+}
+
+/* 微信公众号：描边按钮，鼠标移上去变实底 */
+.btn-wechat {
+  border: 1px solid rgba(255, 255, 255, .65);
+  border-radius: 999px;      /* 足够大的圆角 = 胶囊形 */
+  padding: 6px 16px;
+  font-size: var(--fs-small);
+  white-space: nowrap;
+  transition: background-color .15s, color .15s;
+}
+.btn-wechat:hover {
+  background: var(--c-white);
+  color: var(--c-primary);
+}
+
+/* =========================================================================
+   2. 页眉与导航之间的条带：只保留左侧装饰，右侧文字不要
+   做法：浅灰蓝底 + 左侧一块深蓝斜角，纯背景装饰，不影响布局
+   ========================================================================= */
+.band {
+  height: 26px;
+  border-bottom: 1px solid var(--c-line);
+  background:
+    linear-gradient(105deg, var(--c-primary) 0, var(--c-primary) 140px,
+                    rgba(26, 90, 150, .12) 140px, rgba(26, 90, 150, .12) 100%),
+    var(--c-bg-soft);
+}
+
+/* =========================================================================
+   3. 导航 nav：白底 + 深蓝字（参考图 03），11 项横排、可自动折行
+   ========================================================================= */
+.site-nav {
+  background: var(--c-white);
+  border-bottom: 2px solid var(--c-primary);
+}
+
+/* flex + wrap：一行放不下时自动换行，避免手机横向滚动 */
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.nav-list a {
+  display: block;
+  padding: 14px 20px;
+  color: var(--c-nav-text);
+  font-size: var(--fs-nav);
+  font-weight: bold;
+  transition: background-color .15s, color .15s;
+}
+
+/* 选中项 / 鼠标悬停：深蓝底 + 白字 */
+.nav-list a:hover,
+.nav-list a.active {
+  background: var(--c-primary);
+  color: var(--c-white);
+}
+
+/* =========================================================================
+   4. 主体三栏：左"协会要闻"、中"学生工作"、右"通知公告"
+   桌面用 flex 并排，每栏各占 1 份宽度
+   ========================================================================= */
+.main-cols {
+  display: flex;
+  gap: var(--space-lg);
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+}
+
+/* flex:1 1 0 = 三栏平分剩余宽度；min-width:0 防止长标题把栏撑破 */
+.col {
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-top: 3px solid var(--c-primary);  /* 顶部主色描边，呼应参考图 */
+  border-radius: var(--radius);
+  padding: 0 var(--space) var(--space-xs);
+}
+
+/* 栏标题：深蓝字 + 左侧小色块（::before 是 CSS 生成的装饰块） */
+.col-title {
+  font-size: var(--fs-title);
+  color: var(--c-primary);
+  font-weight: bold;
+  padding: 14px 0 10px;
+  border-bottom: 1px solid var(--c-line);
+  margin-bottom: var(--space-xs);
+}
+.col-title::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 18px;
+  background: var(--c-primary);
+  margin-right: var(--space-sm);
+  vertical-align: -2px;      /* 让色块和文字基线上对齐 */
+}
+
+/* 每条新闻：flex 一行，标题在左、日期在右 */
+.news-list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px dashed var(--c-line);
+  font-size: var(--fs-body);
+}
+
+/* 每行前面的小方块（参考图里的列表符号），用 ::before 生成 */
+.news-list li::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: var(--c-primary);
+  flex: 0 0 5px;             /* 固定宽度，不被压缩 */
+}
+
+/* 标题占满剩余宽度；超长时显示省略号（溢出隐藏 + 不换行 + 省略号） */
+.news-list li a {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color .15s;
+}
+.news-list li a:hover { color: var(--c-primary); }
+
+/* 日期不许被压缩，也不换行 */
+.news-list time {
+  flex: 0 0 auto;
+  color: var(--c-text-light);
+  font-size: var(--fs-small);
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   5. 页脚 footer：蓝色渐变底 + 白字（参考图 06）
+   结构：三列信息（flex 横排）+ 底部版权条（普通流）
+   ========================================================================= */
+.site-footer {
+  background: linear-gradient(180deg, var(--c-footer-top), var(--c-footer-bottom));
+  color: rgba(255, 255, 255, .85);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-xl);
+}
+
+/* flex + wrap：三列信息并排，手机放不下时自动换行 */
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xl);
+  padding-bottom: var(--space-lg);
+}
+
+.footer-col { flex: 1 1 220px; }
+
+/* 页脚小标题：白字 + 左侧金色竖条 */
+.footer-col h3 {
+  font-size: var(--fs-body);
+  color: var(--c-white);
+  margin-bottom: var(--space-sm);
+  padding-left: var(--space-sm);
+  border-left: 3px solid var(--c-accent);
+}
+
+.footer-col p {
+  font-size: var(--fs-small);
+  line-height: 1.9;
+}
+
+/* 版权条：压在页脚最底部，用半透明黑区分 */
+.copyright {
+  background: rgba(0, 0, 0, .18);
+  border-top: 1px solid rgba(255, 255, 255, .18);
+  text-align: center;
+  font-size: var(--fs-small);
+  padding: 12px;
+}
+
+/* =========================================================================
+   手机端适配：屏幕宽度小于 768px 时生效
+   关键动作：三栏从"横排"改成"竖排"，导航项和字号适当缩小
+   ========================================================================= */
+@media (max-width: 768px) {
+  .main-cols {
+    flex-direction: column;   /* 主轴方向改成纵向 → 三栏上下堆叠 */
+    gap: var(--space);
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+  }
+
+  .brand-logo { width: 36px; height: 36px; }
+  .brand-name { font-size: 16px; letter-spacing: 1px; }
+
+  .nav-list a { padding: 10px 12px; font-size: var(--fs-small); }
+
+  .band { height: 18px; }
+
+  .col-title { font-size: 17px; }
+
+  .footer-inner { gap: var(--space); }
+}
